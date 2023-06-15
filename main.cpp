@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "game.h"
 
+
 void handleEvents(sf::RenderWindow& window)
 {
     sf::Event event;
@@ -21,13 +22,12 @@ void update(sf::Clock& clock, Game& game)
     game.updateGame(elapsedTime);
 }
 
-void render(sf::RenderWindow& window, const Game& game)
+void render(sf::RenderWindow& window, Game& game)
 {
     window.clear();
     game.render(window);
     window.display();
 }
-
 
 
 int main()
@@ -36,6 +36,7 @@ int main()
     sf::Clock clock;
 
     Game game;
+
 
     while (window.isOpen())
     {

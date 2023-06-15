@@ -18,4 +18,3 @@ public:
 		window.draw(shape);
 	}
 };
-

@@ -13,12 +13,11 @@ class Game
 	std::vector<Entity*> objects;
 	std::vector<Ghost*> ghosts;
 	std::vector<Cell*> cells;
-	Pacman* pacman;
+	Pacman *pacman;
 
 public:
 
 	Game();
-
 	std::vector<Entity*> getEntities() {
 		return objects;
 	};
@@ -26,22 +25,12 @@ public:
 		return cells;
 
 	};
-	Pacman* getPacman() {
-		return pacman;
+	Pacman getPacman() {
+		return *pacman;
 	};
-	void updateGame(float elapsedTime)
-	{
-
-
-	}; // изменения координат объектов
-	void render(sf::RenderWindow& window) const
-	{
-	
-	}; // отрисовка
-
-
+	void updateGame(float elapsedTime); // изменения координат объектов
+	void render(sf::RenderWindow& window); // отрисовка
 	~Game() = default;
 
 };
-
 

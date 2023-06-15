@@ -15,6 +15,11 @@ public:
         shape.setPosition(sf::Vector2f(xPos, yPos));
     }
 
+    void setPos(int x, int y) {
+        shape.setPosition(sf::Vector2f(x, y));
+    }
+
+
     void updatePacmanDirection() {
         direction = Direction::NONE;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
@@ -75,3 +80,4 @@ public:
 
 
 };
+
