@@ -64,4 +64,7 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pacman.txt" />
+  </ItemGroup>
 </Project>

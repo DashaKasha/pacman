@@ -158,6 +158,9 @@
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="pacman.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="pacman.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

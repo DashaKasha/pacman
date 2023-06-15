@@ -1,9 +1,7 @@
 #include "Game.h"
+#include "Entity.h"
 #include <iostream>
 #include <fstream>
-
-
-
 
 
 Game::Game() {
@@ -76,7 +74,7 @@ Game::Game() {
                     // Создание и добавление SuperPacGum в вектор objects
                     xPos = i % 25;
                     yPos = i / 25;
-                    superPucGums.push_back(new SuperPacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 8.f));
+                    superPucGums.push_back(new SuperPacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 12.f));
                     i++;
                     break;
                     /*
@@ -102,19 +100,20 @@ Game::Game() {
 
 
 void Game::updateGame(float elapsedTime) { 
-    pacman->update(elapsedTime);
-
+    
+    pacman->update(elapsedTime, getCells());
 };
+
 void Game::render(sf::RenderWindow& window){
-    getPacman().render(window);
-    for (auto cell: cells) {
-        cell->render(window);
-    }
     for (auto gum : pucgums) {
         gum->render(window);
     }
     for (auto Supergum : superPucGums) {
         Supergum->render(window);
+    }
+    getPacman().render(window);
+    for (auto cell: cells) {
+        cell->render(window);
     }
 };
 

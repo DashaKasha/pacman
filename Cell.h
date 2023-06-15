@@ -1,5 +1,7 @@
 #pragma once
 #include "Entity.h"
+#include <SFML/Graphics.hpp>
+#include<vector>
 #include<iostream>
 
 class Cell : public StaticEntity
