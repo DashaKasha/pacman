@@ -12,12 +12,9 @@ public:
         direction = Direction::NONE;
         shape.setRadius(PACKMAN_RADIUS);
         shape.setFillColor(PACKMAN_COLOR);
-        shape.setPosition(sf::Vector2f(xPos, yPos));
+        shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
     }
 
-    void setPos(int x, int y) {
-        shape.setPosition(sf::Vector2f(x, y));
-    }
 
 
     void updatePacmanDirection() {

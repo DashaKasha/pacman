@@ -1,50 +1,25 @@
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-x     x                     x                 x  x
-x     x   xxxxxx            x    xxxxx        x  x
-x     x   x    x            x    x   x    xxxxx  x
-x     xxxxx    xxxx         xxx  x   x    x      x
-x                           x    x   x    x      x
-xxxxxxxxxxxxxxxxxxxxxxx     xxxxxx   x    xxxx   x
-x                                    x       x   x
-x                                    xxxxxx      x
-x   xx                                   x       x
-x   xxx             xxxx x   xxxx                x
-x   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx         x
-x               x                  x             x
-x                                                x
-x                                                x
-x     x                     x                 x  x
-x     x   xxxxxx            x    xxxxx        x  x
-x     x   x    x            x    x   x    xxxxx  x
-x     xxxxx    xxxx         xxx  x   x    x      x
-x                           x    x   x    x      x
-xxxxxxxxxxxxxxxxxxxxxxx     xxxxxx   x    xxxx   x
-x                                    x       x   x
-x                                    xxxxxx      x
-x   xx                                   x       x
-x   xxx             xxxx x   xxxx                x
-x   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx         x
-x               x                  x             x
-x                                                x
-x     x                     x                 x  x
-x     x   xxxxxx            x    xxxxx        x  x
-x     x   x    x        P   x    x   x    xxxxx  x
-x     xxxxx    xxxx         xxx  x   x    x      x
-x                           x    x   x    x      x
-xxxxxxxxxxxxxxxxxxxxxxx     xxxxxx   x    xxxx   x
-x                                    x       x   x
-x                                    xxxxxx      x
-x   xx                                   x       x
-x   xxx             xxxx x   xxxx                x
-x   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx         x
-x               x                  x             x
-x     x                     x                 x  x
-x     x   xxxxxx            x    xxxxx        x  x
-x     x   x    x            x    x   x    xxxxx  x
-x     xxxxx    xxxx         xxx  x   x    x      x
-x                           x    x   x    x      x
-xxxxxxxxxxxxxxxxxxxxxxx     xxxxxx   x    xxxx   x
-x                                    x       x   x
-x                                    xxxxxx      x
-x   xx                                   x       x
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxx
+x     x                 x
+x     x   xxxxxx        x
+x     x   x    x        x
+x     xxxxx    xxxx     x
+x                       x
+xxxxxxxxxxxxxxxxxxxxxxx x
+x                       x
+x            P          x
+x   xx                  x
+x   xxx             xxxxx
+x   xxxxxxxxxxxxxxxxxxxxx
+x               x       x
+xx                 x  x x
+xx    xxxxx        x  x x
+x        x   x    xxxxx x
+x   xxx  x   x    x     x
+x   x    x   x    x     x
+x  xxxxxx   x    xxxx  xx
+x           x       x  xx
+x           xxxxxx     xx
+x              x       xx
+x   xxxx               xx
+x                  x    x
+xxxxxxxxxxxxxxxxxxxxxxxxx

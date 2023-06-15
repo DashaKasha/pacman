@@ -30,15 +30,15 @@ Game::Game() {
                 switch (symbol) {
                 case 'x':
                     // Создание и добавление стены в вектор walls
-                    xPos = i % 50;
-                    yPos = i / 50 ;
-                    cells.push_back(new Cell(xPos, yPos, 16.f));
+                    xPos = i % 25;
+                    yPos = i / 25 ;
+                    cells.push_back(new Cell(xPos, yPos, 32.f));
                     i++;
                     break;
                 case 'P':
                     // Создание и добавление Пакмана в вектор objects
-                    xPos = i % 50;
-                    yPos = i / 50 ;
+                    xPos = i % 25;
+                    yPos = i / 25;
                     pacman = new Pacman(xPos, yPos);
                     //pacman->setPos(xPos, yPos);
                     //objects.push_back(pacman);
