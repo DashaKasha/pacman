@@ -63,15 +63,23 @@ Game::Game() {
                         ghostFactory = new CGhostFactory();
                     }
                     break;
-                    
+                    */
                 case '.':
                     // Создание и добавление PacGum в вектор objects
-                    objects.push_back(new PacGum());
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    pucgums.push_back(new PacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 4.f));
+                    i++;
                     break;
+                    
                 case 'o':
                     // Создание и добавление SuperPacGum в вектор objects
-                    objects.push_back(new SuperPacGum());
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    superPucGums.push_back(new SuperPacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 8.f));
+                    i++;
                     break;
+                    /*
                 case '-':
                     // Создание и добавление GhostHouse в вектор objects
                     objects.push_back(new GhostHouse());
@@ -101,7 +109,12 @@ void Game::render(sf::RenderWindow& window){
     getPacman().render(window);
     for (auto cell: cells) {
         cell->render(window);
-
+    }
+    for (auto gum : pucgums) {
+        gum->render(window);
+    }
+    for (auto Supergum : superPucGums) {
+        Supergum->render(window);
     }
 };
 

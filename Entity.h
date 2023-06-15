@@ -49,7 +49,9 @@ public:
 		shape.setFillColor(sf::Color(255, 183, 174));
 		shape.setSize(sf::Vector2f(size, size));
 		shape.setPosition(sf::Vector2f(xPos, yPos));
+		window.draw(shape);
 	}
+
 };
 
 
@@ -65,9 +67,10 @@ public:
 		size = s;
 	}
 	void render(sf::RenderWindow& window) {
-		shape.setFillColor(sf::Color(255, 183, 174));
+		shape.setFillColor(sf::Color(sf::Color::Yellow));
 		shape.setSize(sf::Vector2f(size, size));
 		shape.setPosition(sf::Vector2f(xPos, yPos));
+		window.draw(shape);
 	}
 };
 
