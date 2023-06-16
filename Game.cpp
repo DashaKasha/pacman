@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Entity.h"
+#include "Ghost.h"
 #include <iostream>
 #include <fstream>
 
@@ -23,6 +24,7 @@ Game::Game() {
         int i = 0;
         int xPos = 0;
         int yPos = 0;
+        AbstractGhostFactory* factory = 0;
         while (std::getline(file, line)) {
             for (char symbol : line) {
                 switch (symbol) {
@@ -42,26 +44,35 @@ Game::Game() {
                     //objects.push_back(pacman);
                     i++;
                     break;
-                //case 'b':
-                //case 'p':
-                //case 'i':
-                //case 'c':
-                    /*
-                    // Создание соответствующей фабрики призраков и присваивание указателя на нее ghostFactory
-                    if (symbol == 'b') {
-                        ghostFactory = new BGhostFactory();
-                    }
-                    else if (symbol == 'p') {
-                        ghostFactory = new PGhostFactory();
-                    }
-                    else if (symbol == 'i') {
-                        ghostFactory = new IGhostFactory();
-                    }
-                    else if (symbol == 'c') {
-                        ghostFactory = new CGhostFactory();
-                    }
+                case 'b':
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    factory = new BlinkyFactory();
+                    ghosts.push_back(factory->createGhost(xPos, yPos));
+                    i++;
                     break;
-                    */
+                case 'p':
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    factory = new PinkyFactory();
+                    ghosts.push_back(factory->createGhost(xPos, yPos));
+                    i++;
+                    break;
+                case 'i':
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    factory = new InkyFactory();
+                    ghosts.push_back(factory->createGhost(xPos, yPos));
+                    i++;
+                    break;
+                case 'c':
+                    xPos = i % 25;
+                    yPos = i / 25;
+                    factory = new ClydeFactory();
+                    ghosts.push_back(factory->createGhost(xPos, yPos));
+                    i++;
+                    break;
+                   
                 case '.':
                     // Создание и добавление PacGum в вектор objects
                     xPos = i % 25;
@@ -111,6 +122,11 @@ void Game::render(sf::RenderWindow& window){
     for (auto Supergum : superPucGums) {
         Supergum->render(window);
     }
+
+    for (auto ghost : ghosts) {
+        ghost->render(window);
+    }
+
     getPacman().render(window);
     for (auto cell: cells) {
         cell->render(window);

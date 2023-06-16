@@ -69,7 +69,7 @@ bool checkCollision(sf::FloatRect packmanBounds) {
 class Pacman : public MovingEntity
 {
 private:
-    Direction prevDirection;
+    //Direction prevDirection;
 public:
     Pacman(int xPos, int yPos) {
         direction = Direction::NONE;
@@ -82,7 +82,7 @@ public:
 
     void updatePacmanDirection() {
         direction = Direction::NONE;
-        prevDirection = Direction::NONE;
+        //prevDirection = Direction::NONE;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
             || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
