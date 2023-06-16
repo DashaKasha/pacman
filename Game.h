@@ -10,19 +10,20 @@ class Game
 {
 	int width;
 	int height;
-	std::vector<Entity*> pucgums;
-	std::vector<Entity*> superPucGums;
+	std::vector<PacGum*> pucgums;
+	std::vector<SuperPacGum*> superPucGums;
 	std::vector<Ghost*> ghosts;
 	std::vector<Cell*> cells;
+	int score = 0;
 	Pacman *pacman;
 
 public:
 
 	Game();
-	std::vector<Entity*> getPucGums() {
+	std::vector<PacGum*> getPucGums() {
 		return pucgums;
 	};
-	std::vector<Entity*> getSuperPucQums() {
+	std::vector<SuperPacGum*> getSuperPucQums() {
 		return superPucGums;
 	};
 

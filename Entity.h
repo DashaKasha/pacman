@@ -52,6 +52,12 @@ public:
 		window.draw(shape);
 	}
 
+	void update() {
+
+		
+
+	}
+
 };
 
 

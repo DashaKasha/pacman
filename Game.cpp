@@ -27,66 +27,52 @@ Game::Game() {
         AbstractGhostFactory* factory = 0;
         while (std::getline(file, line)) {
             for (char symbol : line) {
+                xPos = i % 25;
+                yPos = i / 25;
                 switch (symbol) {
+
                 case 'x':
                     // Создание и добавление стены в вектор walls
-                    xPos = i % 25;
-                    yPos = i / 25 ;
                     cells.push_back(new Cell(xPos, yPos, 32.f));
-                    i++;
                     break;
+
                 case 'P':
-                    // Создание и добавление Пакмана в вектор objects
-                    xPos = i % 25;
-                    yPos = i / 25;
+                    // Создание Пакмана
                     pacman = new Pacman(xPos, yPos);
-                    //pacman->setPos(xPos, yPos);
-                    //objects.push_back(pacman);
-                    i++;
                     break;
+
                 case 'b':
-                    xPos = i % 25;
-                    yPos = i / 25;
+                    // Создание Блинки и добавление его в вектор ghosts
                     factory = new BlinkyFactory();
                     ghosts.push_back(factory->createGhost(xPos, yPos));
-                    i++;
                     break;
+
                 case 'p':
-                    xPos = i % 25;
-                    yPos = i / 25;
+                    // Создание Пинки и добавление его в вектор ghosts
                     factory = new PinkyFactory();
                     ghosts.push_back(factory->createGhost(xPos, yPos));
-                    i++;
                     break;
+
                 case 'i':
-                    xPos = i % 25;
-                    yPos = i / 25;
+                    // Создание Инки и добавление его в вектор ghosts
                     factory = new InkyFactory();
                     ghosts.push_back(factory->createGhost(xPos, yPos));
-                    i++;
                     break;
+
                 case 'c':
-                    xPos = i % 25;
-                    yPos = i / 25;
+                    // Создание Клайда и добавление его в вектор ghosts
                     factory = new ClydeFactory();
                     ghosts.push_back(factory->createGhost(xPos, yPos));
-                    i++;
                     break;
                    
                 case '.':
                     // Создание и добавление PacGum в вектор objects
-                    xPos = i % 25;
-                    yPos = i / 25;
                     pucgums.push_back(new PacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 4.f));
-                    i++;
                     break;
                     
                 case 'o':
                     // Создание и добавление SuperPacGum в вектор objects
-                    xPos = i % 25;
-                    yPos = i / 25;
                     superPucGums.push_back(new SuperPacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 12.f));
-                    i++;
                     break;
                     /*
                 case '-':
@@ -96,9 +82,9 @@ Game::Game() {
                     */
                 default:
                     // Неизвестный символ, игнорируем
-                    i++;
                     break;
                 }
+                i++;
             }
         }
 
@@ -112,7 +98,27 @@ Game::Game() {
 
 void Game::updateGame(float elapsedTime) { 
     
-    pacman->update(elapsedTime, getCells());
+    pacman->update(elapsedTime, getCells(), pucgums);
+
+    for (auto ghost : ghosts) {
+        ghost->update(elapsedTime, getCells());
+    }
+
+    // Проверяем каждую стенку на столкновение с пакманом
+    int i = 0;
+    for (PacGum* gum : pucgums) {
+        sf::FloatRect gumBounds = gum->getBounds();
+        sf::FloatRect pacmanBounds = pacman->getBounds();
+        // Проверяем условие столкновения пакмана и стенки
+        if (pacmanBounds.intersects(gumBounds)) {
+            //movement = sf::Vector2f(-movement.x, -movement.y);
+            pucgums.erase(pucgums.begin() + i);
+            score = score + 50;
+            break;
+        }
+        i++;
+    }
+
 };
 
 void Game::render(sf::RenderWindow& window){

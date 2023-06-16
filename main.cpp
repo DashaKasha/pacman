@@ -36,6 +36,13 @@ int main()
     sf::Clock clock;
 
     Game game;
+    /*
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) // Загрузка шрифта
+    {
+        return -1;
+    }
+    */
 
 
     while (window.isOpen())

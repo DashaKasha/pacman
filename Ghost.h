@@ -3,17 +3,40 @@
 #include "Cell.h"
 
 static const float GHOST_SPEED = 120.f; // pixels per second.
-static const float GHOST_RADIUS = 16.f; // pixels
+static const float GHOST_RADIUS = 14.f; // pixels
+
 
 class Ghost:public MovingEntity
 {
 public:
-    //int xPos;
-    //int yPos;
-    //int size = GHOST_RADIUS;
-
+    //GhostState* currentState;
     virtual void update(float elapsedTime, std::vector<Cell*> cells) = 0;
-    // Other member functions and variables common to all ghosts
+
+    void changeGhostDirection(sf::Vector2f movement, float elapsedTime) {
+        //const float step = GHOST_SPEED * elapsedTime;
+        switch (direction)
+        {
+        case Direction::UP:
+            direction = Direction::DOWN;
+            break;
+        case Direction::DOWN:
+            direction = Direction::UP;
+            break;
+        case Direction::LEFT:
+            direction = Direction::RIGHT;
+            break;
+        case Direction::RIGHT:
+            direction = Direction::LEFT;
+            break;
+        case Direction::NONE:
+            break;
+        }
+
+    }
+    
+    ~Ghost() {
+        //delete currentState;
+    }
 };
 
 class Pinky : public Ghost
@@ -29,11 +52,33 @@ public:
     
     }
 
+
+
+
     void update(float elapsedTime, std::vector<Cell*> cells) override
-    {
-        // Pinky's update logic
+    {   
+
+        const float step = GHOST_SPEED * elapsedTime;
+        sf::Vector2f movement(0.f, 0.f);
+        movement.y -= step;
+        //int direction = std::rand() % 4;
+
+
+
+        for (Cell* cell : cells) {
+            sf::FloatRect nextBounds = shape.getGlobalBounds();
+            sf::FloatRect cellBounds = cell->getBounds();
+            nextBounds.left += movement.x;
+            nextBounds.top += movement.y;
+
+            // ѕровер€ем условие столкновени€ призрака и стенки
+            if (nextBounds.intersects(cellBounds)) {
+                
+            }
+        }
+
+        shape.move(movement);
     }
-    // Pinky-specific member functions and variables
 };
 
 class Inky : public Ghost
@@ -53,9 +98,26 @@ public:
 
     void update(float elapsedTime, std::vector<Cell*> cells) override
     {
-        // Inky's update logic
+        const float step = GHOST_SPEED * elapsedTime;
+        sf::Vector2f movement(0.f, 0.f);
+        movement.y += step;
+
+        for (Cell* cell : cells) {
+            sf::FloatRect nextBounds = shape.getGlobalBounds();
+            sf::FloatRect cellBounds = cell->getBounds();
+            nextBounds.left += movement.x;
+            nextBounds.top += movement.y;
+
+            // ѕровер€ем условие столкновени€ призрака и стенки
+            if (nextBounds.intersects(cellBounds)) {
+                movement = sf::Vector2f(-movement.x, -movement.y);
+                this->changeGhostDirection(movement, elapsedTime);
+                break;
+            }
+        }
+
+        shape.move(movement);
     }
-    // Inky-specific member functions and variables
 };
 
 class Clyde : public Ghost
@@ -74,9 +136,26 @@ public:
 
     void update(float elapsedTime, std::vector<Cell*> cells) override
     {
-        // Clyde's update logic
+        const float step = GHOST_SPEED * elapsedTime;
+        sf::Vector2f movement(0.f, 0.f);
+        movement.x += step;
+
+        for (Cell* cell : cells) {
+            sf::FloatRect nextBounds = shape.getGlobalBounds();
+            sf::FloatRect cellBounds = cell->getBounds();
+            nextBounds.left += movement.x;
+            nextBounds.top += movement.y;
+
+            // ѕровер€ем условие столкновени€ призрака и стенки
+            if (nextBounds.intersects(cellBounds)) {
+                movement = sf::Vector2f(-movement.x, -movement.y);
+                this->changeGhostDirection(movement, elapsedTime);
+                break;
+            }
+        }
+
+        shape.move(movement);
     }
-    // Clyde-specific member functions and variables
 };
 
 class Blinky : public Ghost
@@ -87,7 +166,7 @@ public:
 
         direction = Direction::NONE;
         shape.setRadius(GHOST_RADIUS);
-        shape.setFillColor(sf::Color::Blue);
+        shape.setFillColor(sf::Color::Blue); 
         shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
 
     }
@@ -95,15 +174,32 @@ public:
 
     void update(float elapsedTime, std::vector<Cell*> cells) override
     {
-        // Blinky's update logic
+        const float step = GHOST_SPEED * elapsedTime;
+        sf::Vector2f movement(0.f, 0.f);
+        movement.x -= step;
+
+        for (Cell* cell : cells) {
+            sf::FloatRect nextBounds = shape.getGlobalBounds();
+            sf::FloatRect cellBounds = cell->getBounds();
+            nextBounds.left += movement.x;
+            nextBounds.top += movement.y;
+
+            // ѕровер€ем условие столкновени€ призрака и стенки
+            if (nextBounds.intersects(cellBounds)) {
+                movement = sf::Vector2f(-movement.x, -movement.y);
+                this->changeGhostDirection(movement, elapsedTime);
+                break;
+            }
+        }
+
+        shape.move(movement);
     }
-    // Blinky-specific member functions and variables
 };
 
 
 
 
-
+//--------------------AbstractGhostFactory start----------------------------
 
 
 
@@ -148,3 +244,99 @@ public:
         return new Blinky(xPos, yPos, size);
     }
 };
+
+
+//--------------------AbstractGhostFactory end----------------------------
+
+
+
+//--------------------------State start---------------------------
+
+/*
+// Abstract base class for Ghost states
+class GhostState
+{
+public:
+    virtual ~GhostState() {}
+
+    virtual void superPacGumEaten(Ghost& ghost) = 0;
+    virtual void timeModeOver(Ghost& ghost) = 0;
+    virtual void timeFrightenedMode(Ghost& ghost) = 0;
+    virtual void eaten(Ghost& ghost) = 0;
+    virtual void outsideHouse(Ghost& ghost) = 0;
+    virtual void insideHouse(Ghost& ghost) = 0;
+    virtual void computeNextDir(Ghost& ghost) = 0;
+    virtual sf::Vector2f getTargetPosition(Ghost& ghost) = 0;
+};
+
+// HouseMode state
+class HouseModeState : public GhostState
+{
+public:
+    void superPacGumEaten(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    void timeModeOver(Ghost& ghost) override
+    {
+        //ghost.setState(ghost.getChaseModeState()); // Transition to ChaseMode state
+    }
+
+    void timeFrightenedMode(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    void eaten(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    void outsideHouse(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    void insideHouse(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    void computeNextDir(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+    sf::Vector2f getTargetPosition(Ghost& ghost) override
+    {
+        // No action in HouseMode state
+    }
+
+};
+
+// ChaseMode state
+class ChaseModeState : public GhostState
+{
+public:
+};
+
+// ScatterMode state
+class ScatterModeState : public GhostState
+{
+public:
+};
+
+// FrightenedMode state
+class FrightenedModeState : public GhostState
+{
+public:
+};
+
+// EatenMode state
+class EatenModeState : public GhostState
+{
+public:
+};
+
+*/
