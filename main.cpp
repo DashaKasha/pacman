@@ -37,16 +37,6 @@ int main()
 
     Game game;
     
-    //sf::Font font;
-    //if (!font.loadFromFile("PacfontGood-yYye.ttf")) // Загрузка шрифта
-    //{
-    //    return -1;
-    //}
-    //sf::Font font2;
-    //if (!font2.loadFromFile("Emulogic - zrEw.ttf")) // Загрузка шрифта
-    //{
-    //   return -1;
-    //}
 
     while (window.isOpen())
     {

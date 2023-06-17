@@ -75,13 +75,13 @@ public:
 
 
 
-        // Проверяем каждую стенку на столкновение с болотом
+        // Проверяем каждое болото на столкновение с болотом
 
         for (Swamp* swamp : swamps) {
             sf::FloatRect pacmanBounds = getBounds();
             sf::FloatRect swampBounds = swamp->getBounds();
 
-            // Проверяем условие столкновения пакмана и стенки
+            // Проверяем условие столкновения пакмана и болота
             if (swampBounds.intersects(pacmanBounds)) {
                 movement = movement / 2.0f;
                 direction = Direction::NONE;

@@ -104,7 +104,6 @@ Game::Game() {
     if (!font.loadFromFile("D:\\SFML\\Project1\\Emulogic-zrEw.ttf")) // Загрузка шрифта
     {
         std::cerr << "Failed to load font." << std::endl;
-        //return -1;
     }
 
     uiPanel = new UIPanel(font, sf::Vector2f(6, 6));
@@ -112,7 +111,6 @@ Game::Game() {
 
 
 void Game::updateGame(float elapsedTime) { 
-    //if (gameState == GameState::Playing) {
         pacman->update(elapsedTime, getCells(), swamps);
 
         for (auto ghost : ghosts) {
@@ -146,8 +144,9 @@ void Game::updateGame(float elapsedTime) {
             }
             j++;
         }
-
-        if (pucgums.size() == 0 && superPucGums.size()) {
+        // все жевачки съедены
+        if (pucgums.size() == 0 && superPucGums.size()==0) {
+            // ----------------- game over -------------------- //
             gameState = GameState::PlayerWon;
         }
 
@@ -164,14 +163,7 @@ void Game::updateGame(float elapsedTime) {
             }
             j++;
         }
-    //}
-
-    //if (gameState == GameState::PlayerLosed){
-        
-    //}
-
-
-    //if (gameState == GameState::PlayerWon){}
+  
 };
 
 void Game::render(sf::RenderWindow& window){
@@ -209,14 +201,14 @@ void Game::render(sf::RenderWindow& window){
         sf::Font font = uiPanel->getFont();
         int score = uiPanel->getScore();
         losedText.setFont(font);
-        losedText.setPosition(400, 400);
+        losedText.setPosition(300, 350);
         losedText.setCharacterSize(20);
         losedText.setFillColor(sf::Color::White);
         losedText.setString("YOU LOSE :(");
         window.draw(losedText);
 
         scoreText.setFont(font);
-        scoreText.setPosition(400, 435);
+        scoreText.setPosition(320, 400);
         scoreText.setCharacterSize(13);
         scoreText.setFillColor(sf::Color::White);
         scoreText.setString("your score: " + std::to_string(score));
@@ -231,14 +223,14 @@ void Game::render(sf::RenderWindow& window){
         sf::Font font = uiPanel->getFont();
         int score = uiPanel->getScore();
         wonText.setFont(font);
-        wonText.setPosition(400, 400);
+        wonText.setPosition(300, 350);
         wonText.setCharacterSize(20);
         wonText.setFillColor(sf::Color::White);
         wonText.setString("YOU WON :)");
         window.draw(wonText);
 
         scoreText.setFont(font);
-        scoreText.setPosition(400, 435);
+        scoreText.setPosition(320, 400);
         scoreText.setCharacterSize(13);
         scoreText.setFillColor(sf::Color::White);
         scoreText.setString("your score: " + std::to_string(score));

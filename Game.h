@@ -37,7 +37,7 @@ public:
 		scoreText.setPosition(position);
 		scoreText.setCharacterSize(20);
 		scoreText.setFillColor(sf::Color::White);
-		scoreText.setString("Score: " + std::to_string(score));
+		scoreText.setString("Score:" + std::to_string(score));
 		window.draw(scoreText);
 	}
 

@@ -9,34 +9,89 @@ static const float GHOST_RADIUS = 14.f; // pixels
 class Ghost:public MovingEntity
 {
 public:
-    //GhostState* currentState;
-    virtual void update(float elapsedTime, std::vector<Cell*> cells) = 0;
+    void update(float elapsedTime, std::vector<Cell*> cells)
+    {
+        const float step = GHOST_SPEED * elapsedTime;
+        sf::Vector2f movement(0.f, 0.f);
 
-    void changeGhostDirection() {
-        //const float step = GHOST_SPEED * elapsedTime;
+
         switch (direction)
         {
         case Direction::UP:
-            direction = Direction::DOWN;
+            movement.y -= step;
             break;
         case Direction::DOWN:
-            direction = Direction::UP;
+            movement.y += step;
             break;
         case Direction::LEFT:
-            direction = Direction::RIGHT;
+            movement.x -= step;
             break;
         case Direction::RIGHT:
-            direction = Direction::LEFT;
+            movement.x += step;
             break;
         case Direction::NONE:
+            changeGhostDirection();
+            break;
+        }
+
+
+        sf::FloatRect nextBounds = shape.getGlobalBounds();
+        nextBounds.left += movement.x;
+        nextBounds.top += movement.y;
+
+        for (Cell* cell : cells) {
+            sf::FloatRect cellBounds = cell->getBounds();
+            // Проверяем условие столкновения призрака и стенки
+            if (nextBounds.intersects(cellBounds)) {
+                movement = sf::Vector2f(-movement.x, -movement.y);
+
+                switch (direction)
+                {
+                case Direction::UP:
+                    changeGhostDirection();
+                    break;
+                case Direction::DOWN:
+                    changeGhostDirection();
+                    break;
+                case Direction::LEFT:
+                    changeGhostDirection();
+                    break;
+                case Direction::RIGHT:
+                    changeGhostDirection();
+                    break;
+                case Direction::NONE:
+                    break;
+                }
+
+            }
+        }
+
+        shape.move(movement);
+    }
+
+    void changeGhostDirection() {
+        switch (direction)
+        {
+        case Direction::UP:
+            direction = Direction::LEFT;
+            break;
+        case Direction::DOWN:
+            direction = Direction::RIGHT;
+            break;
+        case Direction::LEFT:
+            direction = Direction::DOWN;
+            break;
+        case Direction::RIGHT:
+            direction = Direction::UP;
+            break;
+        case Direction::NONE:
+            direction = Direction::LEFT;
             break;
         }
 
     }
     
-    ~Ghost() {
-        //delete currentState;
-    }
+    ~Ghost() {}
 };
 
 class Pinky : public Ghost
@@ -50,58 +105,6 @@ public:
         shape.setFillColor(sf::Color::Magenta);
         shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
     
-    }
-
-
-
-
-    void update(float elapsedTime, std::vector<Cell*> cells) override
-    {   
-
-        const float step = GHOST_SPEED * elapsedTime;
-        sf::Vector2f movement(0.f, 0.f);
-        //movement.y -= step;
-        int d = 3;//std::rand() % 4;
-        switch (d)
-        {
-        case 0:
-            direction = Direction::UP;
-            movement.y -= step;
-            break;
-        case 1:
-            direction = Direction::DOWN;
-            movement.y += step;
-            break;
-        case 2:
-            direction = Direction::RIGHT;
-            movement.x -= step;
-            break;
-        case 3:
-            direction = Direction::LEFT;
-            movement.x += step;
-            break;
-        case 4:
-            changeGhostDirection();
-            break;
-        }
-
-
-
-        for (Cell* cell : cells) {
-            sf::FloatRect nextBounds = shape.getGlobalBounds();
-            sf::FloatRect cellBounds = cell->getBounds();
-            nextBounds.left += movement.x;
-            nextBounds.top += movement.y;
-
-            // Проверяем условие столкновения призрака и стенки
-            if (nextBounds.intersects(cellBounds)) {
-                    // Изменяем направление по горизонтальной оси на противоположное
-                    //direction = -direction;
-                changeGhostDirection();
-            }
-        }
-
-        shape.move(movement);
     }
 };
 
@@ -117,31 +120,6 @@ public:
         shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
 
     }
-
-
-
-    void update(float elapsedTime, std::vector<Cell*> cells) override
-    {
-        const float step = GHOST_SPEED * elapsedTime;
-        sf::Vector2f movement(0.f, 0.f);
-        movement.y += step;
-
-        for (Cell* cell : cells) {
-            sf::FloatRect nextBounds = shape.getGlobalBounds();
-            sf::FloatRect cellBounds = cell->getBounds();
-            nextBounds.left += movement.x;
-            nextBounds.top += movement.y;
-
-            // Проверяем условие столкновения призрака и стенки
-            if (nextBounds.intersects(cellBounds)) {
-                movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection();
-                break;
-            }
-        }
-
-        shape.move(movement);
-    }
 };
 
 class Clyde : public Ghost
@@ -156,30 +134,6 @@ public:
         shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
 
     }
-
-
-    void update(float elapsedTime, std::vector<Cell*> cells) override
-    {
-        const float step = GHOST_SPEED * elapsedTime;
-        sf::Vector2f movement(0.f, 0.f);
-        movement.x += step;
-
-        for (Cell* cell : cells) {
-            sf::FloatRect nextBounds = shape.getGlobalBounds();
-            sf::FloatRect cellBounds = cell->getBounds();
-            nextBounds.left += movement.x;
-            nextBounds.top += movement.y;
-
-            // Проверяем условие столкновения призрака и стенки
-            if (nextBounds.intersects(cellBounds)) {
-                movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection();
-                break;
-            }
-        }
-
-        shape.move(movement);
-    }
 };
 
 class Blinky : public Ghost
@@ -193,30 +147,6 @@ public:
         shape.setFillColor(sf::Color::Blue); 
         shape.setPosition(sf::Vector2f(xPos * 32.f, yPos * 32.f));
 
-    }
-
-
-    void update(float elapsedTime, std::vector<Cell*> cells) override
-    {
-        const float step = GHOST_SPEED * elapsedTime;
-        sf::Vector2f movement(0.f, 0.f);
-        movement.x -= step;
-
-        for (Cell* cell : cells) {
-            sf::FloatRect nextBounds = shape.getGlobalBounds();
-            sf::FloatRect cellBounds = cell->getBounds();
-            nextBounds.left += movement.x;
-            nextBounds.top += movement.y;
-
-            // Проверяем условие столкновения призрака и стенки
-            if (nextBounds.intersects(cellBounds)) {
-                movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection();
-                break;
-            }
-        }
-
-        shape.move(movement);
     }
 };
 
