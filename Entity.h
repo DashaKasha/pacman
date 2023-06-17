@@ -51,14 +51,26 @@ public:
 		shape.setPosition(sf::Vector2f(xPos, yPos));
 		window.draw(shape);
 	}
+};
 
-	void update() {
+class Swamp : public StaticEntity
+{
 
-		
+public:
+	Swamp(int x, int y, int s=32.f) {
+		xPos = x;
+		yPos = y;
+		size = s;
 
 	}
-
+	void render(sf::RenderWindow& window) {
+		shape.setFillColor(sf::Color(sf::Color(120, 180, 100)));
+		shape.setSize(sf::Vector2f(size, size));
+		shape.setPosition(sf::Vector2f(xPos, yPos));
+		window.draw(shape);
+	}
 };
+
 
 
 

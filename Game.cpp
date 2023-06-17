@@ -6,6 +6,7 @@
 
 
 Game::Game() {
+    gameState = GameState::Playing;
     // create factory AbstractGhostFactory* ghostFactory;
     // read the text file with maze and positions of entities
     // if x - create wall and add into walls
@@ -15,6 +16,7 @@ Game::Game() {
     // if . - create PacGum into objects
     // if o - create SuperPacGum
     // if - - create GhostHouse 
+    // w - болото
 
     std::ifstream file("pacman.txt"); // Путь к текстовому файлу с лабиринтом
 
@@ -74,6 +76,10 @@ Game::Game() {
                     // Создание и добавление SuperPacGum в вектор objects
                     superPucGums.push_back(new SuperPacGum(xPos * 32.f + 16.f, yPos * 32.f + 16.f, 12.f));
                     break;
+                case 'w':
+                    // Создание болота
+                    swamps.push_back(new Swamp(xPos * 32.f, yPos * 32.f));
+                    break;
                     /*
                 case '-':
                     // Создание и добавление GhostHouse в вектор objects
@@ -93,35 +99,85 @@ Game::Game() {
     else {
         std::cout << "Failed to open the file." << std::endl;
     }
+
+    sf::Font font;
+    if (!font.loadFromFile("arialn.ttf")) // Загрузка шрифта
+    {
+        std::cerr << "Failed to load font." << std::endl;
+        //return -1;
+    }
+    uiPanel = new UIPanel(font, sf::Vector2f(10, 10));
 }
 
 
 void Game::updateGame(float elapsedTime) { 
-    
-    pacman->update(elapsedTime, getCells(), pucgums);
+    if (gameState == GameState::Playing) {
+        pacman->update(elapsedTime, getCells(), swamps);
 
-    for (auto ghost : ghosts) {
-        ghost->update(elapsedTime, getCells());
-    }
-
-    // Проверяем каждую стенку на столкновение с пакманом
-    int i = 0;
-    for (PacGum* gum : pucgums) {
-        sf::FloatRect gumBounds = gum->getBounds();
-        sf::FloatRect pacmanBounds = pacman->getBounds();
-        // Проверяем условие столкновения пакмана и стенки
-        if (pacmanBounds.intersects(gumBounds)) {
-            //movement = sf::Vector2f(-movement.x, -movement.y);
-            pucgums.erase(pucgums.begin() + i);
-            score = score + 50;
-            break;
+        for (auto ghost : ghosts) {
+            ghost->update(elapsedTime, getCells());
         }
-        i++;
+
+        // Проверяем каждую жвачку на столкновение с пакманом
+        int i = 0;
+        for (PacGum* gum : pucgums) {
+            sf::FloatRect gumBounds = gum->getBounds();
+            sf::FloatRect pacmanBounds = pacman->getBounds();
+            // Проверяем условие столкновения пакмана и стенки
+            if (pacmanBounds.intersects(gumBounds)) {
+                //movement = sf::Vector2f(-movement.x, -movement.y);
+                pucgums.erase(pucgums.begin() + i);
+                //score = score + 50;
+                uiPanel->increaseScore(10);
+                break;
+            }
+            i++;
+        }
+
+        // Проверяем каждую супержвачку на столкновение с пакманом
+        int j = 0;
+        for (SuperPacGum* gum : superPucGums) {
+            sf::FloatRect gumBounds = gum->getBounds();
+            sf::FloatRect pacmanBounds = pacman->getBounds();
+            // Проверяем условие столкновения пакмана и стенки
+            if (pacmanBounds.intersects(gumBounds)) {
+                //movement = sf::Vector2f(-movement.x, -movement.y);
+                superPucGums.erase(superPucGums.begin() + j);
+                //score = score + 50;
+                uiPanel->increaseScore(100);
+                break;
+            }
+            j++;
+        }
+
+        if (pucgums.size() == 0 && superPucGums.size()) {
+            gameState = GameState::PlayerWon;
+        }
+
+        // Проверяем каждого призрака на столкновение с пакманом
+        for (Ghost* ghost : ghosts) {
+            sf::FloatRect ghostBounds = ghost->getBounds();
+            sf::FloatRect pacmanBounds = pacman->getBounds();
+
+            if (pacmanBounds.intersects(ghostBounds)) {
+                // ----------------- game over -------------------- //
+                gameState = GameState::PlayerLosed;
+
+                break;
+            }
+            j++;
+        }
     }
 
+    //uiPanel->update();
+    if (gameState == GameState::PlayerLosed){}
+
+
+    if (gameState == GameState::PlayerWon){}
 };
 
 void Game::render(sf::RenderWindow& window){
+
     for (auto gum : pucgums) {
         gum->render(window);
     }
@@ -133,10 +189,16 @@ void Game::render(sf::RenderWindow& window){
         ghost->render(window);
     }
 
+    for (auto swamp : swamps) {
+        swamp->render(window);
+    }
+
     getPacman().render(window);
     for (auto cell: cells) {
         cell->render(window);
     }
+
+    //uiPanel->render(window);
 };
 
 

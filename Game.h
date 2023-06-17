@@ -6,6 +6,47 @@
 #include "Ghost.h"
 #include "Cell.h"
 
+enum class GameState
+{
+	Playing,
+	PlayerLosed,
+	PlayerWon,
+};
+
+class UIPanel {
+public:
+	int score;
+	sf::Text scoreText;
+
+	//void updateScoreText()
+	//{
+	//	scoreText.setString("Score: " + std::to_string(score));
+	//}
+
+	UIPanel(sf::Font& font, sf::Vector2f position)
+	{
+		score = 0;
+		scoreText.setFont(font);
+		scoreText.setCharacterSize(24);
+		scoreText.setFillColor(sf::Color::White);
+		scoreText.setPosition(position);
+	}
+	void increaseScore(int amount)
+	{
+		score += amount;
+		//updateScoreText();
+	}
+
+	void render(sf::RenderWindow& window)
+	{
+		scoreText.setString("Score: " + std::to_string(score));
+		window.draw(scoreText);
+	}
+
+};
+
+
+
 class Game
 {
 	int width;
@@ -14,8 +55,12 @@ class Game
 	std::vector<SuperPacGum*> superPucGums;
 	std::vector<Ghost*> ghosts;
 	std::vector<Cell*> cells;
-	int score = 0;
+	std::vector<Swamp*> swamps;
+	UIPanel* uiPanel;
+	//int score = 0;
 	Pacman *pacman;
+	GameState gameState;
+
 
 public:
 
@@ -39,4 +84,3 @@ public:
 	~Game() = default;
 
 };
-

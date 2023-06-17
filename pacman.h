@@ -45,7 +45,7 @@ public:
 
     }
 
-    void update(float elapsedTime, std::vector<Cell*> cells, std::vector<PacGum*> pacgums) {
+    void update(float elapsedTime, std::vector<Cell*> cells, std::vector<Swamp*> swamps) {
         const float step = PACKMAN_SPEED * elapsedTime;
 
         updatePacmanDirection();
@@ -73,6 +73,22 @@ public:
             movement = movement + movement;
         }
 
+
+        // Проверяем каждую стенку на столкновение с болотом
+
+        for (Swamp* swamp : swamps) {
+            sf::FloatRect pacmanBounds = getBounds();
+            sf::FloatRect swampBounds = swamp->getBounds();
+
+            // Проверяем условие столкновения пакмана и стенки
+            if (swampBounds.intersects(pacmanBounds)) {
+                movement = movement / 2.0f;
+                direction = Direction::NONE;
+                break;
+            }
+        }
+
+
         // Проверяем каждую стенку на столкновение с пакманом
 
         for (Cell* cell : cells) {
@@ -88,7 +104,7 @@ public:
             }
         }
 
-
+       
         
        shape.move(movement);
 

@@ -5,12 +5,12 @@ x....x...x....x...x.....x
 x....xxxxx....xxxxx.....x
 x.......................x
 x.xxxxxxxxxxxxxxxxxxxxx.x
-x............P..........x
+x............P......w...x
 x...xx.............xx...x
 x....xx...p.......xx....x
 x...xxxxxxxxxxxxxxxxx...x
 x.......................x
-x.......x.o.....x.......x
+x..w....x.o.....x.......x
 xx...x.............x...xx
 xx...x.............x...xx
 x.xxxxx...xxxxx...xxxxx.x
@@ -19,7 +19,7 @@ x...x.x...x...x...x.x.i.x
 x..xxxx..xx...xx..xxxx..x
 x..ox.......x.......x...x
 x........xxxxxxx........x
-x.......cx.....x........x
+x.......cx.....x...www..x
 x....xxx.....o...xxx....x
 x....x.............x....x
 xxxxxxxxxxxxxxxxxxxxxxxxx
