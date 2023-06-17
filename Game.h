@@ -17,30 +17,36 @@ class UIPanel {
 public:
 	int score;
 	sf::Text scoreText;
+	sf::Font font;
+	sf::Vector2f position;
 
-	//void updateScoreText()
-	//{
-	//	scoreText.setString("Score: " + std::to_string(score));
-	//}
-
-	UIPanel(sf::Font& font, sf::Vector2f position)
+	UIPanel(sf::Font& font_, sf::Vector2f position_)
 	{
 		score = 0;
-		scoreText.setFont(font);
-		scoreText.setCharacterSize(24);
-		scoreText.setFillColor(sf::Color::White);
-		scoreText.setPosition(position);
+		font = font_;
+		position = position_;
 	}
 	void increaseScore(int amount)
 	{
 		score += amount;
-		//updateScoreText();
 	}
 
 	void render(sf::RenderWindow& window)
-	{
+	{	
+		scoreText.setFont(font);
+		scoreText.setPosition(position);
+		scoreText.setCharacterSize(20);
+		scoreText.setFillColor(sf::Color::White);
 		scoreText.setString("Score: " + std::to_string(score));
 		window.draw(scoreText);
+	}
+
+	sf::Font getFont() {
+		return font;
+	}
+
+	int getScore() {
+		return score;
 	}
 
 };
@@ -57,7 +63,6 @@ class Game
 	std::vector<Cell*> cells;
 	std::vector<Swamp*> swamps;
 	UIPanel* uiPanel;
-	//int score = 0;
 	Pacman *pacman;
 	GameState gameState;
 

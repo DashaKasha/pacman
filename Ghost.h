@@ -12,7 +12,7 @@ public:
     //GhostState* currentState;
     virtual void update(float elapsedTime, std::vector<Cell*> cells) = 0;
 
-    void changeGhostDirection(sf::Vector2f movement, float elapsedTime) {
+    void changeGhostDirection() {
         //const float step = GHOST_SPEED * elapsedTime;
         switch (direction)
         {
@@ -60,8 +60,30 @@ public:
 
         const float step = GHOST_SPEED * elapsedTime;
         sf::Vector2f movement(0.f, 0.f);
-        movement.y -= step;
-        //int direction = std::rand() % 4;
+        //movement.y -= step;
+        int d = 3;//std::rand() % 4;
+        switch (d)
+        {
+        case 0:
+            direction = Direction::UP;
+            movement.y -= step;
+            break;
+        case 1:
+            direction = Direction::DOWN;
+            movement.y += step;
+            break;
+        case 2:
+            direction = Direction::RIGHT;
+            movement.x -= step;
+            break;
+        case 3:
+            direction = Direction::LEFT;
+            movement.x += step;
+            break;
+        case 4:
+            changeGhostDirection();
+            break;
+        }
 
 
 
@@ -73,7 +95,9 @@ public:
 
             // Проверяем условие столкновения призрака и стенки
             if (nextBounds.intersects(cellBounds)) {
-                
+                    // Изменяем направление по горизонтальной оси на противоположное
+                    //direction = -direction;
+                changeGhostDirection();
             }
         }
 
@@ -111,7 +135,7 @@ public:
             // Проверяем условие столкновения призрака и стенки
             if (nextBounds.intersects(cellBounds)) {
                 movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection(movement, elapsedTime);
+                this->changeGhostDirection();
                 break;
             }
         }
@@ -149,7 +173,7 @@ public:
             // Проверяем условие столкновения призрака и стенки
             if (nextBounds.intersects(cellBounds)) {
                 movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection(movement, elapsedTime);
+                this->changeGhostDirection();
                 break;
             }
         }
@@ -187,7 +211,7 @@ public:
             // Проверяем условие столкновения призрака и стенки
             if (nextBounds.intersects(cellBounds)) {
                 movement = sf::Vector2f(-movement.x, -movement.y);
-                this->changeGhostDirection(movement, elapsedTime);
+                this->changeGhostDirection();
                 break;
             }
         }

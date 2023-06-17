@@ -101,17 +101,18 @@ Game::Game() {
     }
 
     sf::Font font;
-    if (!font.loadFromFile("arialn.ttf")) // Загрузка шрифта
+    if (!font.loadFromFile("D:\\SFML\\Project1\\Emulogic-zrEw.ttf")) // Загрузка шрифта
     {
         std::cerr << "Failed to load font." << std::endl;
         //return -1;
     }
-    uiPanel = new UIPanel(font, sf::Vector2f(10, 10));
+
+    uiPanel = new UIPanel(font, sf::Vector2f(6, 6));
 }
 
 
 void Game::updateGame(float elapsedTime) { 
-    if (gameState == GameState::Playing) {
+    //if (gameState == GameState::Playing) {
         pacman->update(elapsedTime, getCells(), swamps);
 
         for (auto ghost : ghosts) {
@@ -125,9 +126,7 @@ void Game::updateGame(float elapsedTime) {
             sf::FloatRect pacmanBounds = pacman->getBounds();
             // Проверяем условие столкновения пакмана и стенки
             if (pacmanBounds.intersects(gumBounds)) {
-                //movement = sf::Vector2f(-movement.x, -movement.y);
                 pucgums.erase(pucgums.begin() + i);
-                //score = score + 50;
                 uiPanel->increaseScore(10);
                 break;
             }
@@ -141,9 +140,7 @@ void Game::updateGame(float elapsedTime) {
             sf::FloatRect pacmanBounds = pacman->getBounds();
             // Проверяем условие столкновения пакмана и стенки
             if (pacmanBounds.intersects(gumBounds)) {
-                //movement = sf::Vector2f(-movement.x, -movement.y);
                 superPucGums.erase(superPucGums.begin() + j);
-                //score = score + 50;
                 uiPanel->increaseScore(100);
                 break;
             }
@@ -167,38 +164,88 @@ void Game::updateGame(float elapsedTime) {
             }
             j++;
         }
-    }
+    //}
 
-    //uiPanel->update();
-    if (gameState == GameState::PlayerLosed){}
+    //if (gameState == GameState::PlayerLosed){
+        
+    //}
 
 
-    if (gameState == GameState::PlayerWon){}
+    //if (gameState == GameState::PlayerWon){}
 };
 
 void Game::render(sf::RenderWindow& window){
 
-    for (auto gum : pucgums) {
-        gum->render(window);
-    }
-    for (auto Supergum : superPucGums) {
-        Supergum->render(window);
+    if (gameState == GameState::Playing) {
+
+        for (auto gum : pucgums) {
+            gum->render(window);
+        }
+        for (auto Supergum : superPucGums) {
+            Supergum->render(window);
+        }
+
+        for (auto ghost : ghosts) {
+            ghost->render(window);
+        }
+
+        for (auto swamp : swamps) {
+            swamp->render(window);
+        }
+
+        getPacman().render(window);
+
+        for (auto cell : cells) {
+            cell->render(window);
+        }
+
+        uiPanel->render(window);
     }
 
-    for (auto ghost : ghosts) {
-        ghost->render(window);
+    if (gameState == GameState::PlayerLosed) {
+
+        sf::Text losedText;
+        sf::Text scoreText;
+        sf::Font font = uiPanel->getFont();
+        int score = uiPanel->getScore();
+        losedText.setFont(font);
+        losedText.setPosition(400, 400);
+        losedText.setCharacterSize(20);
+        losedText.setFillColor(sf::Color::White);
+        losedText.setString("YOU LOSE :(");
+        window.draw(losedText);
+
+        scoreText.setFont(font);
+        scoreText.setPosition(400, 435);
+        scoreText.setCharacterSize(13);
+        scoreText.setFillColor(sf::Color::White);
+        scoreText.setString("your score: " + std::to_string(score));
+        window.draw(scoreText);
     }
 
-    for (auto swamp : swamps) {
-        swamp->render(window);
+
+    if (gameState == GameState::PlayerWon) {
+    
+        sf::Text wonText;
+        sf::Text scoreText;
+        sf::Font font = uiPanel->getFont();
+        int score = uiPanel->getScore();
+        wonText.setFont(font);
+        wonText.setPosition(400, 400);
+        wonText.setCharacterSize(20);
+        wonText.setFillColor(sf::Color::White);
+        wonText.setString("YOU WON :)");
+        window.draw(wonText);
+
+        scoreText.setFont(font);
+        scoreText.setPosition(400, 435);
+        scoreText.setCharacterSize(13);
+        scoreText.setFillColor(sf::Color::White);
+        scoreText.setString("your score: " + std::to_string(score));
+        window.draw(scoreText);
+    
     }
 
-    getPacman().render(window);
-    for (auto cell: cells) {
-        cell->render(window);
-    }
-
-    //uiPanel->render(window);
 };
 
 
